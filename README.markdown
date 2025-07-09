@@ -329,38 +329,18 @@ Here is what the page will look like with the above configuration.
 How to create your own MetadataService.cls
 ------------------------------------------
 
-**IMPORTANT NOTE:** This library contains a pre-build version of the Metadata API, you only need to follow these steps if the version of the Metadata API you want is not reflected in the repository currently or if you have modified the patcher script to customise it for your own needs.
+Generate a metadata WSDL from the tools page in your org.
 
-     - Generating a valid Apex MetadataService class
-          - Download and edit the WSDL
-               - Change the Port name from 'Metadata' to 'MetadataPort'
-               - Add displayLocationInDecimal to the CustomField definition.
-                 <xsd:element name="displayLocationInDecimal" minOccurs="0" type="xsd:boolean"/>
-               - Add gracePeriodDays to the HistoryRetentionPolicy definition.
-                 <xsd:element name="gracePeriodDays" type="xsd:int"/>
-               - Locate the CustomMetadataValue complextype, change the type of the 'value' element to 'xsd:string'
-               - Locate the FieldValue complextype, change the type of the 'value' element to 'xsd:string'
-          - Generate Apex from this WSDL
-               - When prompted give it a name of MetadataServiceImported
-               - Verify a MetadataServiceImported class has been created
-          - Run the Patch script to generate a new MetadataService class (as a Document)
-               - Check the Release Notes for API changes, locate the Metadata API section and update MetadataServicePatcher.METADATA_TYPES
-               - Update MetadataServicePatcher.API_VERSION
-               - Ensure you have a Document Folder called MetadataServicePatcher (Developer Name)
-               - Run the following code from execute annoynmous in Developer Console
-                     MetadataServicePatcher.patch();
-               - Verify this has created a MetadataServicePatched Document in the abov folder
-          - Update MetadataService.cls
-               - Open the MetadataServicePatched Document and copy the code          
-               - Paste the code over the current or new MetadataService.cls class 
-                   (recommend MavensMate for this as the file is some 8000+ lines long)
-               - Check for any left over references to MetadataServiceImported in MetadataService and change them to MetadataService
-          - Update MetadataServiceTest.cls
-               - See this for guidelines http://andyinthecloud.com/2013/05/11/code-coverage-for-wsdl2apex-generated-classes
-               - Future releases of the patch script may also generate this class
-          - Update all the Metadata files to the latest API
+Update the get_types_list() method in the python script to include the types you want to support.
 
-**NOTE:** You can review the changes made to the standard Saleforce generated Web Service Apex class for the Metadata API, by reading the comments at the top of the [MetadataServicePatcher.cls](https://github.com/financialforcedev/apex-mdapi/blob/master/apex-mdapi/src/classes/MetadataServicePatcher.cls) class.
+Execute the python script to extract the types you need from the WSDL.
+
+
+Use the WSDL2Apex tool to generate an apex class from the output WSDL. 
+https://github.com/forcedotcom/WSDL2Apex
+
+Bulk Change all class names from output class to MetadataService. Add new classes to MetadataService.cls.
+
 
 Release History
 ---------------
