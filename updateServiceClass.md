@@ -82,3 +82,6 @@ When your are creating a dedicated class for a specific purpose, you will want t
 ## Update repo classes from output class
 1) update the python script `apex_class_replacer.py` with the new class name you want to update to.
 2) Execute the python script to update the repo classes. `python apex_class_replacer.py <OutputClassName from WSDL2Apex> <TargetClassName>`
+
+## Update Test Class for service classes
+1) Execute the python script to generate the test class. `python generate_test_class.py -i <TargetClassName> -t <TargetClassName>Test`
