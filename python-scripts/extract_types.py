@@ -39,6 +39,7 @@ class TypeExtractor:
     def get_types_list(self) -> List[str]:
         """Get the hardcoded list of types to process"""
         return [
+            "CustomObject"
         ]
     
     def _find_schema_element(self) -> ET.Element:

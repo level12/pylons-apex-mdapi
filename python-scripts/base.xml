@@ -1,6 +1,5 @@
-<!-- This file is used as the base for the WSDL to Apex class generation. All componets in this file are required for the WSDL2Apex tool to work. -->
-
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is used as the base for the WSDL to Apex class generation. All componets in this file are required for the WSDL2Apex tool to work. -->
 <definitions 
     targetNamespace="http://soap.sforce.com/2006/04/metadata" 
     xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
