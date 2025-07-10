@@ -111,6 +111,35 @@ class ApexClassReplacer:
         pattern = rf'\b{re.escape(source_namespace)}\.(\w+)'
         replacement = rf'{target_namespace}.\1'
         return re.sub(pattern, replacement, content)
+
+    def add_metadata_inheritance(self, class_content: str, target_namespace: str) -> str:
+        """Add MetadataCore.Metadata inheritance to class declarations if not already present."""
+        # Pattern to match class declarations at the start of the class content
+        # This matches the very first line that declares the class
+        class_decl_pattern = r'^(\s*public\s+class\s+\w+)(\s*\{)'
+
+        def replace_class_declaration(match):
+            class_decl = match.group(1)
+            opening_brace = match.group(2)
+
+            # Check if class already extends something
+            if ' extends ' in class_decl:
+                return match.group(0)  # Don't modify if already extends something
+
+            # Add MetadataCore.Metadata inheritance
+            return f"{class_decl} extends {target_namespace}.Metadata{opening_brace}"
+
+        # Apply the pattern to the beginning of the content
+        result = re.sub(class_decl_pattern, replace_class_declaration, class_content, flags=re.MULTILINE)
+
+        # Debug output
+        if result != class_content:
+            logger.debug(f"Added inheritance to class declaration")
+        else:
+            logger.debug(f"No inheritance added - class may already extend something or pattern didn't match")
+            logger.debug(f"First 100 chars of class content: {class_content[:100]}")
+
+        return result
     
     def generate_replacement_report(self, target_classes: Dict[str, str], 
                                   source_classes: Dict[str, str]) -> str:
@@ -195,16 +224,24 @@ class ApexClassReplacer:
         new_content_parts.append(target_class_declaration + " {")
         new_content_parts.append("")
         
-        # Add all source classes with namespace replacement
+        # Add all source classes with namespace replacement and inheritance
         for class_name in sorted(source_classes.keys()):
             class_content = source_classes[class_name]
-            
+
             # Replace namespace references if preserving target namespace
             if preserve_target_namespace and source_main_class != target_namespace:
                 class_content = self.replace_namespace_references(
                     class_content, source_main_class, target_namespace
                 )
-            
+
+            # Add MetadataCore.Metadata inheritance if output file is not MetadataCore
+            logger.debug(f"Target namespace: {target_namespace}")
+            if target_namespace != "MetadataCore":
+                logger.debug(f"Adding inheritance to class: {class_name}")
+                class_content = self.add_metadata_inheritance(class_content, "MetadataCore")
+            else:
+                logger.debug(f"Skipping inheritance for MetadataCore namespace")
+
             new_content_parts.append("    " + class_content.replace("\n", "\n    "))
             new_content_parts.append("")
         

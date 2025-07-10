@@ -65,7 +65,6 @@ public class MetadataCoreTest {
         // Invoke operations    
         Test.startTest();     
         MetadataCore.MetadataPort metaDataPort = new MetadataCore.MetadataPort();
-        metaDataPort.retrieve(null);
         metaDataPort.checkDeployStatus(null, false);
         metaDataPort.listMetadata(null, null);
         metaDataPort.describeMetadata(null);

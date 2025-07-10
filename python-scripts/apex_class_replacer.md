@@ -13,6 +13,7 @@ This script is particularly useful when you have:
 
 - **Smart Class Parsing**: Automatically extracts inner class definitions from Apex files
 - **Namespace Preservation**: Maintains the target file's namespace while updating class definitions
+- **Automatic Inheritance**: Makes all classes extend MetadataCore.Metadata when output file is not MetadataCore
 - **Comprehensive Reporting**: Shows what classes will be replaced, added, or removed
 - **Dry Run Mode**: Preview changes before applying them
 - **Error Handling**: Robust parsing with detailed error messages
@@ -96,7 +97,8 @@ TOTAL TARGET CLASSES: 48
 2. **Parse Target File**: Extracts existing inner classes and file structure from the target file
 3. **Namespace Mapping**: Maps class references from source namespace to target namespace
 4. **Class Replacement**: Replaces existing classes and adds new ones
-5. **File Generation**: Creates a new file with updated classes while preserving the original structure
+5. **Inheritance Addition**: Automatically adds `extends MetadataCore.Metadata` to all classes when output file is not MetadataCore
+6. **File Generation**: Creates a new file with updated classes while preserving the original structure
 
 ## Use Cases
 
@@ -107,6 +109,9 @@ Perfect for updating Salesforce Metadata API classes when Salesforce releases ne
 ```bash
 # Update MetadataCore with latest API definitions
 python apex_class_replacer.py MetadataCoreNew.cls MetadataCore.cls -o MetadataCore.cls
+
+# Create MetadataCustomObject with inheritance from MetadataCore.Metadata
+python apex_class_replacer.py MetadataCoreNew.cls MetadataCustomObject.cls -o MetadataCustomObject.cls
 ```
 
 ### WSDL2Apex Integration

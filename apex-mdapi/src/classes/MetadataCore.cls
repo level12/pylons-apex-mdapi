@@ -389,7 +389,7 @@ public class MetadataCore {
             private String[] field_order_type_info = new String[]{'folder','type_x'};
         }
 
-    public class Metadata {
+    public virtual class Metadata {
             public String fullName;
             private String[] fullName_type_info = new String[]{'fullName','http://soap.sforce.com/2006/04/metadata',null,'0','1','false'};
             private String[] apex_schema_type_info = new String[]{'http://soap.sforce.com/2006/04/metadata','false','false'};
