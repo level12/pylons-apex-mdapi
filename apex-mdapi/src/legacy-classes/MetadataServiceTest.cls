@@ -29,10 +29,7 @@
  **/ 
 @isTest  
 private class MetadataServiceTest
-{    
-    /**
-     * Dummy Metadata API web service mock class (see MetadataCreateJobTest.cls for a better example)
-     **/
+{
 	private class WebServiceMockImpl implements WebServiceMock 
 	{
 		public void doInvoke(
